@@ -7,6 +7,7 @@ RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false upd
 RUN DEBIAN_FRONTEND=noninteractive \
     && sudo apt-get install wget -y \
     && sudo apt-get install software-properties-common -y \
+    && sudo apt-get install zsh -y \
     && sudo apt-get install tzdata -y \
     && sudo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
@@ -23,4 +24,4 @@ RUN DEBIAN_FRONTEND=noninteractive \
     && sudo npm install -g azure-functions-core-tools@3 --unsafe-perm true \
     && python3 -m pip install --upgrade pip
 
-EXPOSE 10000
+EXPOSE 7000

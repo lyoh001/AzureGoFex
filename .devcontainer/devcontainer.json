@@ -1,25 +1,24 @@
 {
-	"name": "Function Container",
+	"name": "Dev Container",
 	"build": {
 		"dockerfile": "Dockerfile",
 	},
 	"settings": {
-		"terminal.integrated.profile.linux": "/bin/bash"
+		"terminal.integrated.profile.linux": "zsh",
 	},
 	"extensions": [
-		"amazonwebservices.aws-toolkit-vscode",
-		"ms-azuretools.vscode-azurefunctions",
-		"ms-azuretools.vscode-azurelogicapps",
-		"ms-azuretools.vscode-azureresourcegroups",
-		"ms-azuretools.vscode-azurestaticwebapps",
-		"ms-azuretools.vscode-bicep",
 		"ms-dotnettools.vscode-dotnet-runtime",
-		"ms-python.python",
 		"ms-vscode.azure-account",
+		"ms-azuretools.vscode-azurefunctions",
+		"ms-azuretools.vscode-azureresourcegroups",
+		"ms-azuretools.vscode-bicep",
+		"github.copilot",
+		"ms-python.python",
 		"sourcery.sourcery",
-		"visualstudioexptteam.vscodeintellicode"
+		"rangav.vscode-thunder-client",
+		"visualstudioexptteam.vscodeintellicode",
 	],
 	"forwardPorts": [
-		10000
+		7000
 	]
 }

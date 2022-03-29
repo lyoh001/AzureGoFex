@@ -16,3 +16,8 @@ module logicapps 'logicapps.bicep' = {
   name: 'logicapps'
   scope: rg
 }
+
+module storage 'storage.bicep' = {
+  name: 'storage'
+  scope: rg
+}

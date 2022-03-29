@@ -1,5 +1,1 @@
-aiohttp
 azure-functions
-matplotlib
-pandas
-pandas_profiling
