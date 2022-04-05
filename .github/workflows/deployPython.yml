@@ -30,8 +30,8 @@ jobs:
 
     - name: Lint with flake8
       run: |
-        flake8 ./azureaadrolesall --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 ./azureaadrolesall --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        flake8 ./azuregofex --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 ./azuregofex --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
   
     - name: Run Azure Functions Action
       uses: Azure/functions-action@v1.3.1
