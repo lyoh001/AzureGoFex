@@ -1,18 +1,17 @@
-# VICGOV - Azure Active Directory Roles Report
+# VICGOV - Azure Go Fex
 ## 1. Introduction
 ### 1.1	Overview
 
 A number of challenges arise when managing AAD roles across multiple tenants, Hosting Services team have been working to make this process easier to maintain with less administrative overhead.
 
-This document is intended to provide a high level overview of workflow on how the automation notifies the admins with Azure AD roles assigned to all staff in VICGOV.
+This document is intended to provide a high level overview of workflow on how the automation transfers files from Gofex SFT client to Sharepoint dir https://vicgov.sharepoint.com/sites/CenITex/BAS/Technical Documents/GoFex Reporting and notifies the admins with job status alert email.
 
 Included in this report is a step by step detailed guide around where to look for troubleshooting.
 
-## 2 O365 Process Reports (CIS Benchmark)
-- Priority: 1
+## 2 Go Fex Sharepoint Integration Process Reports
 - Description: MS Sharepoint integration from the on-prem server..
+- Priority: 3
 - Owners: Tier 0
-
 
 ## 3 Logical Architecture
 ### 3.1	Logical System Component Overview
