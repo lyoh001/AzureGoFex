@@ -1,0 +1,13 @@
+{
+  "scriptFile": "__init__.py",
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "azuregofexstrg",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "azuregofexstrg/{name}",
+      "connection": "STORAGE_ACCT_APP_SETTING"
+    }
+  ]
+}
