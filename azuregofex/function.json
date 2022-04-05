@@ -2,7 +2,7 @@
   "scriptFile": "__init__.py",
   "bindings": [
     {
-      "name": "azuregofexstrg",
+      "name": "myblob",
       "type": "blobTrigger",
       "direction": "in",
       "path": "azuregofexstrg/{name}",
