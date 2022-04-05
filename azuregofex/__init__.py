@@ -1,19 +1,12 @@
 import asyncio
 import base64
-import datetime
 import functools
 import logging
 import os
-import tempfile
 import time
 
 import aiohttp
 import azure.functions as func
-import matplotlib.pyplot as plt
-import pandas as pd
-import pytz
-from pandas_profiling import ProfileReport
-from PIL import Image
 
 
 def timer(func):
@@ -75,15 +68,9 @@ async def get_api_headers(session, *args, **kwargs):
         return (await resp.json())["access_token"]
 
 
-async def fetch(session, graph_api_headers, url, role=None):
-    async with session.get(url=url, headers=graph_api_headers) as resp:
-        return (await resp.json())["value"], role
-
-
 @timer
 async def main(mytimer: func.TimerRequest) -> None:
     logging.info("******* Starting main function *******")
-    attachment, roles_df = {}, pd.DataFrame()
     async with aiohttp.ClientSession() as session:
         graph_api_headers = next(
             iter(
@@ -102,105 +89,3 @@ async def main(mytimer: func.TimerRequest) -> None:
                 )
             )
         )
-
-        roles = next(
-            iter(
-                await asyncio.gather(
-                    fetch(
-                        session,
-                        graph_api_headers,
-                        "https://graph.microsoft.com/v1.0/directoryRoles",
-                    )
-                )
-            )
-        )
-        for payload, role in await asyncio.gather(
-            *(
-                fetch(
-                    session,
-                    graph_api_headers,
-                    f"https://graph.microsoft.com/v1.0/directoryRoles/{role['id']}/members",
-                    role["displayName"],
-                )
-                for role in next(iter(roles))
-            )
-        ):
-            df = pd.DataFrame(payload)
-            df["roles"] = [role] * len(payload)
-            roles_df = roles_df.append(df)
-
-        roles_df = roles_df[
-            [
-                "userPrincipalName",
-                "displayName",
-                "roles",
-                "jobTitle",
-                "description",
-                "id",
-            ]
-        ]
-        roles_df.sort_values(by=["userPrincipalName"], inplace=True)
-        attachment["csv"] = roles_df.to_csv(index=False)
-
-        with tempfile.TemporaryDirectory() as tempdir_path:
-            report = ProfileReport(
-                roles_df,
-                title="VICGOV AAD Roles",
-                pool_size=1,
-                progress_bar=False,
-                explorative=True,
-                correlations=None,
-            )
-            report.to_file((report_path := os.path.join(tempdir_path, "report.html")))
-            with open(report_path, "r") as file_reader:
-                attachment["html"] = file_reader.read()
-
-        role_df = (
-            roles_df.groupby("roles")
-            .count()["userPrincipalName"]
-            .sort_values(ascending=False)
-            .head(7)
-        )
-        role_df.index
-
-        plt.style.use("Solarize_Light2")
-        plt.figure(figsize=(8.2, 8.2)).patch.set_facecolor("#b6dbeb")
-        ax = plt.subplot(1, 1, 1)
-        ax.pie(
-            role_df,
-            labels=role_df.index,
-            autopct="%1.1f%%",
-            shadow=False,
-            startangle=90,
-            textprops={"fontsize": 7},
-        )
-        plt.title("The Top 7 most UPN assigned VICGOV AAD Roles")
-        plt.xlabel("")
-        plt.xticks(rotation="90")
-        plt.ylabel("")
-        plt.legend(loc="lower left", labels=role_df.index)
-        plt.tight_layout()
-
-        with tempfile.TemporaryDirectory() as tempdir_path:
-            plt.savefig(
-                (pie_graph_path := os.path.join(tempdir_path, "pie_graph.jpg")), dpi=100
-            )
-            Image.open(pie_graph_path).resize((590, 590), Image.ANTIALIAS).save(
-                (pie_graph_path := os.path.join(tempdir_path, "pie_graph_resized.jpg"))
-            )
-            with open(pie_graph_path, "rb") as graph_reader:
-                attachment["graph"] = base64.b64encode(graph_reader.read()).decode(
-                    "ascii"
-                )
-
-        attachment["time"] = str(
-            datetime.datetime.now(pytz.timezone("Australia/Melbourne"))
-        )[:-13]
-
-        async with session.post(
-            url=os.environ["LOGICAPP_URI"],
-            json=attachment,
-        ) as resp:
-            logging.info(
-                f"******* Finishing main function with status {resp.status} *******"
-            )
