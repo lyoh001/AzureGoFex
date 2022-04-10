@@ -11,6 +11,7 @@
 		"ms-vscode.azure-account",
 		"ms-azuretools.vscode-azureresourcegroups",
 		"ms-azuretools.vscode-azurefunctions",
+		"ms-azuretools.vscode-azurestaticwebapps",
 		"ms-azuretools.vscode-bicep",
 		"github.copilot",
 		"ms-python.python",
