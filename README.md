@@ -4,7 +4,7 @@
 
 A number of challenges arise when managing AAD roles across multiple tenants, Hosting Services team have been working to make this process easier to maintain with less administrative overhead.
 
-This document is intended to provide a high level overview of workflow on how the automation transfers files from Gofex SFT client to Sharepoint dir https://vicgov.sharepoint.com/sites/CenITex/BAS/Technical Documents/GoFex Reporting and notifies the admins with job status alert email.
+This document is intended to provide a high level overview of workflow on how the automation transfers files from Gofex SFT client to Sharepoint dir https://****.sharepoint.com/sites/****/****/Technical Documents/GoFex Reporting and notifies the admins with job status alert email.
 
 Included in this report is a step by step detailed guide around where to look for troubleshooting.
 

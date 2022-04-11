@@ -100,7 +100,19 @@ async def main(myblob: func.InputStream) -> None:
             headers=graph_api_headers,
             data=myblob.read(),
         ) as resp:
-            logging.info(f"Response status code: {resp.status}")
+            status = resp.status
+            logging.info(f"Response status code: {status}")
             logging.info(f"Response body: {await resp.json()}")
 
-    logging.info("******* Ending main function *******")
+        async with session.post(
+            url=os.environ["LOGICAPP_URI"],
+            json={
+                "Name": f"{myblob.name.split('/')[-1]}",
+                "BlobSize": f"{myblob.length} bytes",
+                "BlobUri": f"{myblob.uri}",
+                "Status": f"{status}",
+            },
+        ) as resp:
+            logging.info(
+                f"******* Finishing main function with status {resp.status} *******"
+            )
