@@ -1,27 +1,37 @@
 # VICGOV - Azure Go Fex
+
+## Table of Contents
+1. [Introduction](#1-introduction)
+   1. [Overview](#11-overview)
+2. [Go Fex Sharepoint Integration Process Reports](#2-go-fex-sharepoint-integration-process-reports)
+3. [Logical Architecture](#3-logical-architecture)
+   1. [Logical System Component Overview](#31-logical-system-component-overview)
+4. [Used By](#used-by)
+
 ## 1. Introduction
-### 1.1	Overview
+### 1.1 Overview
 
-A number of challenges arise when managing AAD roles across multiple tenants, Hosting Services team have been working to make this process easier to maintain with less administrative overhead.
+Managing AAD roles across multiple tenants can be challenging, especially when it involves minimizing administrative overhead. The VICGOV - Azure Go Fex project aims to simplify this process and make it easier to maintain.
 
-This document is intended to provide a high level overview of workflow on how the automation transfers files from Gofex SFT client to Sharepoint dir https://****.sharepoint.com/sites/****/****/Technical Documents/GoFex Reporting and notifies the admins with job status alert email.
+This document provides a high-level overview of the workflow for transferring files from the GoFex SFT client to the SharePoint directory https://****.sharepoint.com/sites/****/****/Technical Documents/GoFex Reporting. It also includes information on how administrators are notified of job status through alert emails. Additionally, a detailed troubleshooting guide is included.
 
-Included in this report is a step by step detailed guide around where to look for troubleshooting.
-
-## 2 Go Fex Sharepoint Integration Process Reports
-- Description: MS Sharepoint integration from the on-prem server..
+## 2. Go Fex Sharepoint Integration Process Reports
+- Description: MS SharePoint integration from the on-prem server.
 - Priority: 3
 - Owners: Tier 0
 
-## 3 Logical Architecture
-### 3.1	Logical System Component Overview
+## 3. Logical Architecture
+### 3.1 Logical System Component Overview
 ![Figure 1: Logical Architecture Overview](./.images/workflow.png)
-1. The file gets dumped from the application.
-1. Azure Automation account runs AzCopy script every hour to transfer the file from on-prem to Azure Blob via Hybrid Runbook Workers.
-1. This invokes a function via eventgrid. 
-1. The function will auth via managed identity against Azure AD and retrieves API credentials from Azure Keyvault that is secured under T0 subscription.
-1. SPN has permission on the BAS sharepoint site to upload a file.
-1. The function will invoke logic app for notification email.
+
+The logical architecture of the VICGOV - Azure Go Fex project is as follows:
+
+1. The file is dumped from the application.
+2. An Azure Automation account runs an AzCopy script every hour to transfer the file from the on-premises server to Azure Blob storage using Hybrid Runbook Workers.
+3. This action triggers a function via Event Grid.
+4. The function authenticates via managed identity against Azure AD and retrieves API credentials from Azure Key Vault, which is secured under the T0 subscription.
+5. The Service Principal Name (SPN) has the necessary permission on the BAS SharePoint site to upload a file.
+6. The function invokes a logic app for notification emails.
 
 ## Used By
 
